@@ -1,9 +1,9 @@
-from turtle import title
 from flask import Flask #importing the flask class Flask
 from flask import render_template # importing render template to render html
-
+from flask import flash
 from flask import url_for # used for css files
 from forms import RegistrationForm, LoginForm
+from flask import redirect
 
 app = Flask(__name__) # createing an instance of the Flask class (__name__) is a special name in python
 
@@ -37,9 +37,12 @@ def about_page():
     return render_template('about.html', title='About page')
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm();
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('home_page'))
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/register')
