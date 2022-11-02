@@ -1,9 +1,13 @@
+from turtle import title
 from flask import Flask #importing the flask class Flask
 from flask import render_template # importing render template to render html
 
 from flask import url_for # used for css files
+from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__) # createing an instance of the Flask class (__name__) is a special name in python
+
+app.config['SECRET_KEY'] = '4c646ca7670c07c818b8093121c3c326'
 
 posts = [
     {
@@ -29,9 +33,19 @@ def home_page():
     return render_template('home.html', posts=posts)
 
 @app.route("/about")
-def about():
+def about_page():
     return render_template('about.html', title='About page')
 
+
+@app.route('/register')
+def register():
+    form = RegistrationForm();
+    return render_template('register.html', title='Register', form=form)
+
+@app.route('/register')
+def login():
+    form = LoginForm();
+    return render_template('login.html', title='Login', form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)
